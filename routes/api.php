@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ApplicationsController;
 use App\Http\Controllers\Api\AuditLogController;
+use App\Http\Controllers\Api\AutomationHookController;
 use App\Http\Controllers\Api\CloudProviderTokensController;
 use App\Http\Controllers\Api\DatabasesController;
 use App\Http\Controllers\Api\DeployController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Api\SecurityController;
 use App\Http\Controllers\Api\ServersController;
 use App\Http\Controllers\Api\ServicesController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\UsageRecordController;
 use App\Http\Middleware\ApiAllowed;
 use App\Jobs\PushServerUpdateJob;
 use App\Models\Server;
@@ -62,6 +64,13 @@ Route::group([
 
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->middleware(['api.ability:read']);
     Route::get('/audit-logs/{id}', [AuditLogController::class, 'show'])->middleware(['api.ability:read']);
+
+    Route::get('/automation-hooks', [AutomationHookController::class, 'index'])->middleware(['api.ability:read']);
+    Route::post('/automation-hooks', [AutomationHookController::class, 'store'])->middleware(['api.ability:write']);
+    Route::delete('/automation-hooks/{id}', [AutomationHookController::class, 'destroy'])->middleware(['api.ability:write']);
+
+    Route::get('/usage-records', [UsageRecordController::class, 'index'])->middleware(['api.ability:read']);
+    Route::get('/usage-records/summary', [UsageRecordController::class, 'summary'])->middleware(['api.ability:read']);
 
     Route::get('/projects', [ProjectController::class, 'projects'])->middleware(['api.ability:read']);
     Route::get('/projects/{uuid}', [ProjectController::class, 'project_by_uuid'])->middleware(['api.ability:read']);

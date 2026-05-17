@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\DatabasesController;
 use App\Http\Controllers\Api\DeployController;
 use App\Http\Controllers\Api\GithubController;
 use App\Http\Controllers\Api\HetznerController;
+use App\Http\Controllers\Api\OrganizationController;
 use App\Http\Controllers\Api\OtherController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\ResourcesController;
@@ -48,6 +49,15 @@ Route::group([
     Route::get('/teams/current/members', [TeamController::class, 'current_team_members'])->middleware(['api.ability:read']);
     Route::get('/teams/{id}', [TeamController::class, 'team_by_id'])->middleware(['api.ability:read']);
     Route::get('/teams/{id}/members', [TeamController::class, 'members_by_id'])->middleware(['api.ability:read']);
+
+    Route::get('/organizations', [OrganizationController::class, 'index'])->middleware(['api.ability:read']);
+    Route::get('/organizations/{id}', [OrganizationController::class, 'show'])->middleware(['api.ability:read']);
+    Route::post('/organizations', [OrganizationController::class, 'store'])->middleware(['api.ability:write']);
+    Route::patch('/organizations/{id}', [OrganizationController::class, 'update'])->middleware(['api.ability:write']);
+    Route::delete('/organizations/{id}', [OrganizationController::class, 'destroy'])->middleware(['api.ability:write']);
+    Route::get('/organizations/{id}/members', [OrganizationController::class, 'members'])->middleware(['api.ability:read']);
+    Route::post('/organizations/{id}/members', [OrganizationController::class, 'inviteMember'])->middleware(['api.ability:write']);
+    Route::delete('/organizations/{id}/members/{userId}', [OrganizationController::class, 'removeMember'])->middleware(['api.ability:write']);
 
     Route::get('/projects', [ProjectController::class, 'projects'])->middleware(['api.ability:read']);
     Route::get('/projects/{uuid}', [ProjectController::class, 'project_by_uuid'])->middleware(['api.ability:read']);

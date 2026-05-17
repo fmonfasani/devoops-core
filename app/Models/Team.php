@@ -46,6 +46,7 @@ class Team extends Model implements SendsDiscord, SendsEmail, SendsPushover, Sen
         'personal_team',
         'show_boarding',
         'custom_server_limit',
+        'organization_id',
     ];
 
     protected $casts = [
@@ -242,6 +243,11 @@ class Team extends Model implements SendsDiscord, SendsEmail, SendsPushover, Sen
     public function environment_variables()
     {
         return $this->hasMany(SharedEnvironmentVariable::class)->where('type', 'team');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
     }
 
     public function members()

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApplicationsController;
+use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\CloudProviderTokensController;
 use App\Http\Controllers\Api\DatabasesController;
 use App\Http\Controllers\Api\DeployController;
@@ -58,6 +59,9 @@ Route::group([
     Route::get('/organizations/{id}/members', [OrganizationController::class, 'members'])->middleware(['api.ability:read']);
     Route::post('/organizations/{id}/members', [OrganizationController::class, 'inviteMember'])->middleware(['api.ability:write']);
     Route::delete('/organizations/{id}/members/{userId}', [OrganizationController::class, 'removeMember'])->middleware(['api.ability:write']);
+
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])->middleware(['api.ability:read']);
+    Route::get('/audit-logs/{id}', [AuditLogController::class, 'show'])->middleware(['api.ability:read']);
 
     Route::get('/projects', [ProjectController::class, 'projects'])->middleware(['api.ability:read']);
     Route::get('/projects/{uuid}', [ProjectController::class, 'project_by_uuid'])->middleware(['api.ability:read']);

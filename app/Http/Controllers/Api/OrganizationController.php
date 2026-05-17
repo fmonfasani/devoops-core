@@ -164,6 +164,8 @@ class OrganizationController extends Controller
 
         $organization->load('owner');
 
+        audit('organization.created', "Organization '{$organization->name}' created.", organizationId: $organization->id);
+
         return response()->json($this->removeSensitiveData($organization), 201);
     }
 
@@ -236,6 +238,8 @@ class OrganizationController extends Controller
 
         $organization->update($validated);
 
+        audit('organization.updated', "Organization '{$organization->name}' updated.", organizationId: $organization->id);
+
         return response()->json($this->removeSensitiveData($organization->fresh()));
     }
 
@@ -283,6 +287,8 @@ class OrganizationController extends Controller
         }
 
         $organization->delete();
+
+        audit('organization.deleted', "Organization '{$organization->name}' deleted.", organizationId: $organization->id);
 
         return response()->json(['message' => 'Organization deleted.'], 200);
     }
@@ -396,6 +402,8 @@ class OrganizationController extends Controller
 
         $organization->members()->attach($user->id, ['role' => $validated['role']]);
 
+        audit('organization.member.added', "User '{$user->email}' added as {$validated['role']}.", organizationId: $organization->id);
+
         return response()->json(['message' => 'Member added.'], 200);
     }
 
@@ -447,6 +455,8 @@ class OrganizationController extends Controller
         }
 
         $organization->members()->detach($userId);
+
+        audit('organization.member.removed', "User #{$userId} removed from organization.", organizationId: $organization->id);
 
         return response()->json(['message' => 'Member removed.'], 200);
     }
